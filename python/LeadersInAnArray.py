@@ -19,8 +19,8 @@ class Solution:
         arraySlice = None
         
         for i in range(N):
-            arraySlice = A[i:N]
-            localMax = max(arraySlice) - A[i]
+            arraySlice = A[i:]
+            localMax = sum(arraySlice) - A[i]
             if A[i] >= localMax:
                 answer.append(A[i])
         return answer
