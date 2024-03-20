@@ -14,7 +14,7 @@ class Solution:
         # Create a list to store the leaders, and a variable to store the local max
         # slice the array from A[x] to A[N-1]
         # if A[x] >= max(slice) - A[x], then add A[x] to the list of leaders
-        answer = [None]
+        answer = []
         localMax = None
         arraySlice = None
         
