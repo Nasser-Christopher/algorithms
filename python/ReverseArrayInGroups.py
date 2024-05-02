@@ -13,11 +13,16 @@
 # Explanation: First group consists of elements
 # 1, 2, 3. Second group consists of 4,5.
 
+# Expected Time Complexity: O(N)
+# Expected Auxiliary Space: O(1)
+
 
 class Solution:
     # Function to reverse every sub-array group of size k.
     def reverseInGroups(self, arr, N, K):
-        pass
+        for i in range(0, N, K):
+            arr[i : i + K] = arr[i : i + K][::-1]
+        return arr
 
 
 A = Solution()
