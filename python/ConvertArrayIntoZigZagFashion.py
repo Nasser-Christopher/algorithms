@@ -31,7 +31,6 @@ class Solution:
     # 3) Break the loop if no swapping is done (i.e. the array is already in zig-zag fashion)
     # 4) Return the modified array
     def zigZag(self, arr, n):
-        # arr = sorted(arr)
         while True:
             swapped = False
             for i in range(1, n - 1, 2):
@@ -46,13 +45,17 @@ class Solution:
                 break
         return arr
 
-    # As per the above approach, the time complexity is not O(N) as expected, but the answer was still accepted...
+    # As per the above approach, the time complexity is O(N) since each for loop runs N/2 times.
+    # The first for loop runs N/2 times because it only iterates through the odd indices.
+    # The second for loop runs N/2 times because it only iterates through the even indices.
+    # Even in the worse case run time of O(2N), the time complexity is still O(N) as constants are ignored.
+    # The space complexity is O(1) since array is modified in-place.
 
 
 A = Solution()
 print(
     A.zigZag([4, 3, 7, 8, 6, 2, 1], 7)
-)  # [3, 7, 4, 8, 2, 6, 1] # NOTE: Apparently this is wrong, and the correct answer is [4, 7, 3, 8, 2, 6, 1]???
+)  # [3, 7, 4, 8, 2, 6, 1] # NOTE: Apparently this is "wrong", and the "correct answer" is [4, 7, 3, 8, 2, 6, 1] (which is also a zigzag fashion)
 print(
     A.zigZag(
         [
