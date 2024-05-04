@@ -26,8 +26,8 @@
 class Solution:
     # Program for zig-zag conversion of array
     # Approach (naive):
-    # 1) Swap adjacent elements starting from 1st index to sort adjacent elements from small to large
-    # 2) Swap adjacent elements starting from 0th index to sort adjacent elements from large to small
+    # 1) Swap adjacent elements starting from 1st index to sort adjacent elements from small to large (Odds)
+    # 2) Swap adjacent elements starting from 0th index to sort adjacent elements from large to small (Evens)
     # 3) Break the loop if no swapping is done (i.e. the array is already in zig-zag fashion)
     # 4) Return the modified array
     def zigZag(self, arr, n):
