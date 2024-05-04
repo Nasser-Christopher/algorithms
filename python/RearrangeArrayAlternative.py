@@ -20,6 +20,10 @@
 # Expected Time Complexity: O(N).
 # Expected Auxiliary Space: O(1).
 
+# Logic: Create two variables, one to store the local maximum and the other to store the local minimum.
+# From the index at any point in between the array, the left element will be less, and the right element will be greater than the index's value.
+# Given that the array is sorted, the first element will be the global minimum and the last element will be the global maximum.
+
 
 class Solution:
     def rearrange(self, arr, n):

@@ -16,6 +16,13 @@
 # Expected Time Complexity: O(N)
 # Expected Auxiliary Space: O(1)
 
+# Logic: N is the largest value, so the expected value sum would be N*(N+1)/2
+# There is always ONLY ONE missing element. So, the sum of the given array will be [N*(N+1)/2 - missing element]
+# Thus you take the difference between the expected value sum and the sum of the given array to get the missing element.
+
+# Approach:
+# 1)
+
 
 class Solution:
     def missingNumber(self, array, n):
