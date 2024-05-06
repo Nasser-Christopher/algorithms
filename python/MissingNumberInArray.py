@@ -30,13 +30,14 @@
 # 3) Return the difference number
 
 
+# NOTE: apparently for-loops using a range iterator are too slow for this problem.
 class Solution:
     def missingNumber(self, array, n):
         expected = n * (n + 1) // 2
         evaluatedNow = None
         evaluated = 0
         while array != []:
-            # following line is technically not needed; kept since answer submitted to GeeksForGeeks
+            # following line(s) is technically not needed; kept since answer submitted to GeeksForGeeks
             if evaluatedNow is None:
                 evaluatedNow = array[-1]
 
