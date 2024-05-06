@@ -19,6 +19,10 @@
 # Logic: N is the largest value, so the expected value sum would be N*(N+1)/2
 # There is always ONLY ONE missing element. So, the sum of the given array will be [N*(N+1)/2 - missing element]
 # Thus you take the difference between the expected value sum and the sum of the given array to get the missing element.
+# NOTE: The above logic only works if the array is sorted.
+# In the case that the array is not sorted, you can sort the array and then apply the logic.
+# if this is too slow, you can use the following approach:
+
 
 # Approach:
 # 1) Add up the array elements
@@ -28,7 +32,18 @@
 
 class Solution:
     def missingNumber(self, array, n):
-        pass
+        expected = n * (n + 1) // 2
+        evaluatedNow = None
+        evaluated = 0
+        while array != []:
+            # following line is technically not needed; kept since answer submitted to GeeksForGeeks
+            if evaluatedNow is None:
+                evaluatedNow = array[-1]
+
+            evaluatedNow = array.pop()
+            evaluated += evaluatedNow
+
+        return expected - evaluated
         # code here
 
 
