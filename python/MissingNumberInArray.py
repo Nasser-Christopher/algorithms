@@ -21,7 +21,9 @@
 # Thus you take the difference between the expected value sum and the sum of the given array to get the missing element.
 
 # Approach:
-# 1)
+# 1) Add up the array elements
+# 2) Subtract the sum from the expected sum N*(N+1)/2
+# 3) Return the difference number
 
 
 class Solution:

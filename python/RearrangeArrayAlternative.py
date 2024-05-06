@@ -24,6 +24,14 @@
 # From the index at any point in between the array, the left element will be less, and the right element will be greater than the index's value.
 # Given that the array is sorted, the first element will be the global minimum and the last element will be the global maximum.
 
+# Approach:
+# 1a) 1 and N are the global minimum and maximum values respectively.
+# 1b) Two variables, left and right, are used to store the local minimum and maximum values.
+# 2) Traverse the array from the first element to the last element.
+# 3a) If the index is even, store the maximum value at the index and decrement the right variable.
+# 3b) If the index is odd, store the minimum value at the index and increment the left variable.
+# 4) Return the modified array.
+
 
 class Solution:
     def rearrange(self, arr, n):
