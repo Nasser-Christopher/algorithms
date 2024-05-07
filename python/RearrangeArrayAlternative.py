@@ -25,18 +25,43 @@
 # Given that the array is sorted, the first element will be the global minimum and the last element will be the global maximum.
 
 # Approach:
-# 1a) 1 and N are the global minimum and maximum values respectively.
-# 1b) Two variables, left and right, are used to store the local minimum and maximum values.
+# 1a) index 0 and N-1 are the global minimum and maximum values respectively.
+# 1b) Two variables, left and right, are used to store the encountered next-in-line minimum and maximum values.
 # 2) Traverse the array from the first element to the last element.
-# 3a) If the index is even, store the maximum value at the index and decrement the right variable.
-# 3b) If the index is odd, store the minimum value at the index and increment the left variable.
+# 3a) If the index is even, store the next maximum value at the index and decrement the right pointer.
+# 3b) If the index is odd, store the next minimum value at the index and increment the left pointer.
 # 4) Return the modified array.
 
 
 class Solution:
+
     def rearrange(self, arr, n):
-        pass
+        left = 0
+        right = n - 1
+        maxElement = arr[-1] + 1
+
+        for i in range(n):
+            if i % 2 == 0:
+                arr[i] += (arr[right] % maxElement) * maxElement
+                right -= 1
+            else:
+                arr[i] += (arr[left] % maxElement) * maxElement
+                left += 1
+            print(
+                f"arr[{i}] => {arr[i]}, left = {left}, right = {right}, maxElement = {maxElement}"
+            )
+
+        for i in range(n):
+            print(
+                f"arr[{i}] => {arr[i]}, arr[{i}] // maxElement = {arr[i] // maxElement}"
+            )
+            arr[i] = arr[i] // maxElement
+
+        return arr
 
 
 A = Solution()
 print(A.rearrange([1, 2, 3, 4, 5, 6], 6))  # [6, 1, 5, 2, 4, 3]
+print(
+    A.rearrange([1969, 2677, 3142, 4631, 4764, 5748, 6476, 6487], 8)
+)  # [6487, 1969, 6476, 2677, 5748, 3142, 4764, 4631]
