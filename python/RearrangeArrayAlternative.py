@@ -20,19 +20,20 @@
 # Expected Time Complexity: O(N).
 # Expected Auxiliary Space: O(1).
 
-# Logic: Create two variables, one to store the local maximum and the other to store the local minimum.
-# From the index at any point in between the array, the left element will be less, and the right element will be greater than the index's value.
-# Given that the array is sorted, the first element will be the global minimum and the last element will be the global maximum.
+# Logic: NOTE: The trick of this problem is to use the max element as a multiplier to store two elements at once.
 
 # Approach:
-# 1a) index 0 and N-1 are the global minimum and maximum values respectively.
-# 1b) Two variables, left and right, are used to store the encountered next-in-line minimum and maximum values.
-# 2) Traverse the array from the first element to the last element.
-# 3a) If the index is even, store the next maximum value at the index and decrement the right pointer.
-# 3b) If the index is odd, store the next minimum value at the index and increment the left pointer.
-# 4) Return the modified array.
+# 1) Create two pointers, one at the beginning of the array and the other at the end of the array.
+# 2) Create a variable to store the maximum element.
+# 3) Iterate through the array.
+# 4a) If the index is even, add the maximum element to the current element and multiply by the maximum element.
+# 4b) If the index is odd, add the minimum element to the current element and multiply by the maximum element.
+# 5) Iterate through the array and divide each element by the maximum element.
+# 6) Return the modified array.
 
 
+# NOTE: The following is the ONLY possible solution to this specific problem.
+# Without using Modulus and Division, the problem is unsolvable in O(1) space complexity.
 class Solution:
 
     def rearrange(self, arr, n):
@@ -47,14 +48,8 @@ class Solution:
             else:
                 arr[i] += (arr[left] % maxElement) * maxElement
                 left += 1
-            print(
-                f"arr[{i}] => {arr[i]}, left = {left}, right = {right}, maxElement = {maxElement}"
-            )
 
         for i in range(n):
-            print(
-                f"arr[{i}] => {arr[i]}, arr[{i}] // maxElement = {arr[i] // maxElement}"
-            )
             arr[i] = arr[i] // maxElement
 
         return arr
