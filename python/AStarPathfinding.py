@@ -3,10 +3,11 @@ import heapq
 import random
 
 class Node:
-    def __init__(self, x, y, val, parent=None):
+    def __init__(self, x, y, val, parent=None, neighbors=None) -> None:
         self.x = x
         self.y = y
         self.parent = parent
+        self.neighbors = neighbors
         self.g = 0
         self.h = 0
         self.f = 0
