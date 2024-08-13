@@ -1,5 +1,5 @@
 .vscode
-.\AStarpathfinding\Include
-.\AStarpathfinding\Lib
-.\AStarpathfinding\Scripts
-.\AStarpathfinding\*.cfg
+python\AStarpathfinding\Include
+python\AStarpathfinding\Lib
+python\AStarpathfinding\Scripts
+python\AStarpathfinding\*.cfg
