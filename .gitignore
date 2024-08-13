@@ -1,5 +1,7 @@
-.vscode
-python\AStarpathfinding\Include
-python\AStarpathfinding\Lib
-python\AStarpathfinding\Scripts
-python\AStarpathfinding\*.cfg
+# Ignore all changes in Git
+.vscode/
+/python/AStarPathfinding/Lib/
+/python/AStarPathfinding/Scripts/
+/python/AStarPathfinding/Include/
+/python/AStarPathfinding/*.cfg
+/python/AStarPathfinding/share/
