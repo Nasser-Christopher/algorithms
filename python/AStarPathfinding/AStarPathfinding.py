@@ -2,6 +2,7 @@
 import heapq
 import random
 
+
 class Node:
     def __init__(self, x, y, val, parent=None, neighbors=None) -> None:
         self.x = x
