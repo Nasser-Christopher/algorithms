@@ -16,10 +16,15 @@ class Node:
         self.value = val
         self.g = 0
         self.h = 0
-        self.f = 0
+        self.f = self.value
 
-    # def __eq__(self, other):
-    #     return self.x == other.x and self.y == other.y
+    def calculate_h(self, end):
+        self.h = abs(self.x - end.x) + abs(self.y - end.y)
+        self.f += self.h
+        
+    def calculate_g(self, start):
+        self.g = abs(self.x - start.x) + abs(self.y - start.y)
+        self.f += self.g
 
     def __lt__(self, other):
         return self.f < other.f
@@ -39,11 +44,12 @@ class NodeList:
     def remove(self, node: Node):
         self.nodes.remove(node)
         
-    def generateList(self, node: Node):
+    def generateList(self):
         for x in range(self.width):
             for y in range(self.height):
                 nodeValue = random.randint(0, 100)
                 self.add(Node(x, y, nodeValue))
+        self.set_neighbors()
                 
     def getNode(self, x, y):
         for node in self.nodes:
@@ -62,13 +68,15 @@ class NodeList:
                     neighbor = self.getNode(neighbor_x, neighbor_y)
                     if neighbor is not None:
                         node.neighbors.append(neighbor)
+    
+    
 class Solution:
     def __init__(self) -> None:
         self.NodeList = NodeList(10, 10)
         self.NodeList.generateList()
         self.AStar(self.NodeList)
         
-    def AStar(self, NodeList) -> NodeList:
+    def AStar(self, nodeList:NodeList, startingNode:Node, endingNode:Node) -> NodeList:
         openList = []
         closedList = []
         pass
