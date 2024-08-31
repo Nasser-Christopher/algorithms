@@ -30,7 +30,7 @@ class Node:
         return self.f < other.f
 
     def __repr__(self):
-        return f"({self.x}, {self.y}, {self.f})"
+        return f"Node:({self.x}, {self.y} || f = {self.f})"
     
 class NodeList:
     def __init__(self, w, h) -> None:
