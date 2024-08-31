@@ -79,6 +79,15 @@ class Solution:
     def AStar(self, nodeList:NodeList, startingNode:Node, endingNode:Node) -> NodeList:
         openList = []
         closedList = []
+        
+        openList.append(startingNode)
+        
+        # while openList is not empty
+        # get the node with the lowest f value
+        # set that node's parent as the current node
+        # remove the current node from the openList
+        # add the current node to the closedList
+        
         pass
     
 
