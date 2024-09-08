@@ -3,7 +3,7 @@ import heapq
 import random
 
 # imported libraries (Dependencies)
-import numpy as np
+#import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -68,28 +68,59 @@ class NodeList:
                     neighbor = self.getNode(neighbor_x, neighbor_y)
                     if neighbor is not None:
                         node.neighbors.append(neighbor)
+                        
+    def get_neighbors(self, node:Node):
+        return node.neighbors
     
     
 class Solution:
-    def __init__(self) -> None:
-        self.NodeList = NodeList(10, 10)
-        self.NodeList.generateList()
-        self.AStar(self.NodeList)
-        
     def AStar(self, nodeList:NodeList, startingNode:Node, endingNode:Node) -> NodeList:
         openList = []
         closedList = []
         
         openList.append(startingNode)
         
-        # while openList is not empty
-        # get the node with the lowest f value
-        # set that node's parent as the current node
-        # remove the current node from the openList
-        # add the current node to the closedList
+        for node in nodeList.nodes:
+            node.calculate_h(endingNode)
+            node.calculate_g(startingNode)
+            
+        while openList is not None:
+            current = heapq.heappop(openList)
+            closedList.append(current)
+            
+            if current == endingNode:
+                return closedList
+            
+            for neighbor in current.neighbors:
+                if neighbor in closedList:
+                    continue
+                
+                if neighbor not in openList:
+                    heapq.heappush(openList, neighbor)
+                else:
+                    new_g = current.g + 1
+                    if new_g < neighbor.g:
+                        neighbor.g = new_g
+                        neighbor.parent = current
+                        neighbor.f = neighbor.g + neighbor.h
+                        
+            
         
-        pass
+        
+        
     
 
 
+
+
+
+
 A = Solution()
+
+
+test_array = NodeList(10, 10)
+test_array.generateList()
+startingNode =  test_array.getNode(0, 0)
+endingNode =  test_array.getNode(9, 9)
+
+print(A.AStar(test_array, startingNode, endingNode))
