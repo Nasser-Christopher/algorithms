@@ -9,25 +9,20 @@ import matplotlib.animation as animation
 
 
 class Node:
-    def __init__(self, x, y, val=0, parent=None, neighbors=None, walkable = True) -> None:
+    def __init__(self, x, y, value, walkable=True):
         self.x = x
         self.y = y
+        self.value = value
         self.walkable = walkable
-        self.parent = parent
-        self.neighbors = neighbors
-        self.value = val
-        self.g = 0
-        self.h = 0
-        self.f = self.value
+        self.g = float('inf')
+        self.h = float('inf')
+        self.f = float('inf')
+        self.parent = None
+        self.neighbors = []
 
-    def calculate_h(self, end):
-        self.h = abs(self.x - end.x) + abs(self.y - end.y)
-        self.f += self.h
-        
-    def calculate_g(self, start):
-        self.g = abs(self.x - start.x) + abs(self.y - start.y)
-        self.f += self.g
-        
+    def calculate_h(self, endingNode):
+        self.h = abs(self.x - endingNode.x) + abs(self.y - endingNode.y)
+        self.f = self.g + self.h
 
     def __lt__(self, other):
         return self.f < other.f
@@ -55,7 +50,7 @@ class NodeList:
     def generateList(self):
         for x in range(self.width):
             for y in range(self.height):
-                nodeValue = 0
+                nodeValue = random.randint(0, 10)
                 walkable = random.choice([True, False, True, True]) 
                 self.add(Node(x, y, nodeValue, walkable = walkable))
         self.set_neighbors()
@@ -85,48 +80,38 @@ class NodeList:
 class Solution:
     def AStar(self, nodeList:NodeList, startingNode:Node, endingNode:Node) -> NodeList:
         openList = []
-        closedList = []
-        steps = []  # To store the state at each step
+        closedSet = set()
+        steps = []  # To store the state at each step (for graphing later)
         
-        # startingNode.g = 0
-        # startingNode.calculate_h(endingNode)
-        # startingNode.calculate_g(startingNode)
-        
-        
+        startingNode.g = 0
+        startingNode.calculate_h(endingNode)
         heapq.heappush(openList, startingNode)
         
-        for node in nodeList.nodes:
-            node.calculate_h(endingNode)
-            node.calculate_g(startingNode)
-            
         while openList:
             current = heapq.heappop(openList)
-            closedList.append(current)
+            closedSet.add(current)
             
-            steps.append((list(openList), list(closedList)))
+            steps.append((list(openList), list(closedSet)))
             
             if current == endingNode:
-                return closedList, steps
+                endingNode.g = current.g
+                return closedSet, steps
             
             for neighbor in current.neighbors:
-                if neighbor in closedList or not neighbor.walkable:
+                if neighbor in closedSet or not neighbor.walkable:
                     continue
-                
-                
                 
                 tentative_g = current.g + 1
                 if tentative_g < neighbor.g:
                     neighbor.g = tentative_g
+                    neighbor.calculate_h(endingNode)
                     neighbor.parent = current
-                    neighbor.f = neighbor.g + neighbor.h
-            # heapq.heapify(openList)
             
                     if neighbor not in openList:
                         heapq.heappush(openList, neighbor)
                         
-        return closedList, steps
-                        
-            
+        return closedSet, steps
+        
     def visualize_path(self, steps, nodeList: NodeList):
         fig, ax = plt.subplots(figsize=(10, 10))
 
@@ -139,17 +124,21 @@ class Solution:
                     ax.scatter(node.x, node.y, color='red', marker='x')
                 elif node in closedList:
                     ax.scatter(node.x, node.y, color='blue', marker='o')
+                    ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
                 elif node in openList:
                     ax.scatter(node.x, node.y, color='green', marker='o')
+                    ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
                 else:
                     ax.scatter(node.x, node.y, color='gray', marker='o')
+                    ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
                 
-                ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
+                
                     
-            for i in range(1, len(closedList)):
-                x_values = [closedList[i-1].x, closedList[i].x]
-                y_values = [closedList[i-1].y, closedList[i].y]
-                ax.plot(x_values, y_values, color='orange')
+            for node in closedList:
+                if node.parent:
+                    x_values = [node.x, node.parent.x]
+                    y_values = [node.y, node.parent.y]
+                    ax.plot(x_values, y_values, color='orange')
 
             ax.set_title(f"Step {frame + 1}")
             ax.set_xlabel("X")
@@ -166,7 +155,6 @@ class Solution:
 
 
 
-# TODO: Implement a Matplotlib visualization of the pathfinding algorithm
 A = Solution()
 
 
