@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 
 
 class Node:
-    def __init__(self, x, y, val=0, parent=None, neighbors=None) -> None:
+    def __init__(self, x, y, val=0, parent=None, neighbors=None, walkable = True) -> None:
         self.x = x
         self.y = y
+        self.walkable = walkable
         self.parent = parent
         self.neighbors = neighbors
         self.value = val
@@ -48,7 +49,8 @@ class NodeList:
         for x in range(self.width):
             for y in range(self.height):
                 nodeValue = random.randint(0, 100)
-                self.add(Node(x, y, nodeValue))
+                walkable = random.choice([True, False]) 
+                self.add(Node(x, y, nodeValue, walkable))
         self.set_neighbors()
                 
     def getNode(self, x, y):
@@ -78,6 +80,8 @@ class Solution:
         openList = []
         closedList = []
         
+        #heapq.heapify(openList)
+        
         openList.append(startingNode)
         
         for node in nodeList.nodes:
@@ -92,7 +96,7 @@ class Solution:
                 return closedList
             
             for neighbor in current.neighbors:
-                if neighbor in closedList:
+                if neighbor in closedList or not neighbor.walkable:
                     continue
                 
                 if neighbor not in openList:
@@ -103,9 +107,25 @@ class Solution:
                         neighbor.g = new_g
                         neighbor.parent = current
                         neighbor.f = neighbor.g + neighbor.h
+            heapq.heapify(openList)
+        return None
                         
             
+    def visualize_path(self, path: list):
+        x_coords = [node.x for node in path]
+        y_coords = [node.y for node in path]
         
+        plt.figure(figsize=(10, 10))
+        plt.plot(x_coords, y_coords, marker='o')
+        
+        for node in path:
+            plt.annotate(f'f={node.f}', (node.x, node.y), textcoords="offset points", xytext=(0,10), ha='center')
+        
+        plt.title("A* Pathfinding Visualization")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.grid(True)
+        plt.show()
         
         
     
@@ -114,7 +134,7 @@ class Solution:
 
 
 
-
+# TODO: Implement a Matplotlib visualization of the pathfinding algorithm
 A = Solution()
 
 
@@ -123,4 +143,5 @@ test_array.generateList()
 startingNode =  test_array.getNode(0, 0)
 endingNode =  test_array.getNode(9, 9)
 
-print(A.AStar(test_array, startingNode, endingNode))
+path = A.AStar(test_array, startingNode, endingNode)
+A.visualize_path(path)
