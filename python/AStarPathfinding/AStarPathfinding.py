@@ -55,7 +55,7 @@ class NodeList:
     def generateList(self):
         for x in range(self.width):
             for y in range(self.height):
-                nodeValue = random.randint(0, 10)
+                nodeValue = 0
                 walkable = random.choice([True, False, True, True]) 
                 self.add(Node(x, y, nodeValue, walkable = walkable))
         self.set_neighbors()
@@ -122,7 +122,8 @@ class Solution:
             # heapq.heapify(openList)
             
                     if neighbor not in openList:
-                            heapq.heappush(openList, neighbor)
+                        heapq.heappush(openList, neighbor)
+                        
         return closedList, steps
                         
             
@@ -142,6 +143,13 @@ class Solution:
                     ax.scatter(node.x, node.y, color='green', marker='o')
                 else:
                     ax.scatter(node.x, node.y, color='gray', marker='o')
+                
+                ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
+                    
+            for i in range(1, len(closedList)):
+                x_values = [closedList[i-1].x, closedList[i].x]
+                y_values = [closedList[i-1].y, closedList[i].y]
+                ax.plot(x_values, y_values, color='orange')
 
             ax.set_title(f"Step {frame + 1}")
             ax.set_xlabel("X")
