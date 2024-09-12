@@ -23,6 +23,7 @@ class Node:
     def calculate_h(self, endingNode):
         self.h = abs(self.x - endingNode.x) + abs(self.y - endingNode.y)
         self.f = self.g + self.h
+        
 
     def __lt__(self, other):
         return self.f < other.f
@@ -42,18 +43,18 @@ class NodeList:
     def remove(self, node: Node):
         self.nodes.remove(node)
         
-    def set_walkable(self, x, y, walkable):
-        node = self.getNode(x, y)
-        if node is not None:
-            node.walkable = walkable
+    # def set_walkable(self, x, y, walkable):
+    #     node = self.getNode(x, y)
+    #     if node is not None:
+    #         node.walkable = walkable
         
     def generateList(self):
         for x in range(self.width):
             for y in range(self.height):
-                nodeValue = random.randint(0, 10)
-                walkable = random.choice([True, False, True, True]) 
+                nodeValue = 0 ## TODO: Remove the nodeValue from the Node class
+                walkable = random.choice([True, False, True])
                 self.add(Node(x, y, nodeValue, walkable = walkable))
-        self.set_neighbors()
+        # self.set_neighbors()
                 
     def getNode(self, x, y):
         for node in self.nodes:
@@ -72,9 +73,11 @@ class NodeList:
                     neighbor = self.getNode(neighbor_x, neighbor_y)
                     if neighbor is not None and neighbor.walkable:
                         node.neighbors.append(neighbor)
+                        print(f"Node ({node.x}, {node.y}) added neighbor ({neighbor.x}, {neighbor.y})")
                         
-    def get_neighbors(self, node:Node):
-        return node.neighbors
+
+    # def get_neighbors(self, node:Node):
+    #     return node.neighbors
     
     
 class Solution:
@@ -93,8 +96,9 @@ class Solution:
             
             steps.append((list(openList), list(closedSet)))
             
-            if current == endingNode:
+            if current.x == endingNode.x and current.y == endingNode.y:
                 endingNode.g = current.g
+                endingNode.f = current.f
                 return closedSet, steps
             
             for neighbor in current.neighbors:
@@ -102,13 +106,21 @@ class Solution:
                     continue
                 
                 tentative_g = current.g + 1
-                if tentative_g < neighbor.g:
+                if tentative_g < neighbor.g or neighbor == endingNode:
                     neighbor.g = tentative_g
                     neighbor.calculate_h(endingNode)
                     neighbor.parent = current
             
                     if neighbor not in openList:
                         heapq.heappush(openList, neighbor)
+                        
+            # print(f"Processing Node: ({current.x}, {current.y}) || g = {current.g}, h = {current.h}, f = {current.f}")
+            # print(f"Open List: {[str(node) for node in openList]}")
+            # print(f"Closed Set: {[str(node) for node in closedSet]}")
+                        
+        if endingNode.f == float('inf'):
+            print("No valid path found to the ending node.")
+            endingNode.f = -1
                         
         return closedSet, steps
         
@@ -129,7 +141,7 @@ class Solution:
                     ax.scatter(node.x, node.y, color='green', marker='o')
                     ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
                 else:
-                    ax.scatter(node.x, node.y, color='gray', marker='o')
+                    ax.scatter(node.x, node.y, color='gray', marker='x')
                     ax.text(node.x, node.y, f'{node.f:.1f}', fontsize=12, ha='center', va='center')
                 
                 
@@ -164,6 +176,8 @@ startingNode =  test_array.getNode(0, 0)
 startingNode.walkable = True
 endingNode =  test_array.getNode(9, 9)
 endingNode.walkable = True
+test_array.set_neighbors()
 
 path, steps = A.AStar(test_array, startingNode, endingNode)
+print(endingNode)
 A.visualize_path(steps, test_array)
